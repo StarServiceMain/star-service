@@ -34,7 +34,7 @@ export default function EmployeesListPage() {
       }
 
       // שליפה של דירוגים לפי העובדים האלה
-      const employeeIds = employeesData.map((e) => e.id);
+      const employeeIds = employees.map(emp => emp.id);
 
       const { data: ratingsData, error: ratingError } = await supabase
         .from("ratings")
