@@ -13,7 +13,7 @@ export default function AddEmployeePage() {
   const params = useParams();
   const branchId = params.id as string;
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
