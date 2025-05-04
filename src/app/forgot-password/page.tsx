@@ -1,30 +1,54 @@
 "use client";
 
-import { Mail, Star } from "lucide-react";
-import { useState } from "react";
+import { Star } from "lucide-react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import supabase from "@/app/utils/supabase/client";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const stars = useMemo(
+    () =>
+      [...Array(40)].map((_, i) => ({
+        id: i,
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        duration: 2 + Math.random() * 3,
+      })),
+    []
+  );
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // כאן תוכל לשלב API לשליחת קישור לאיפוס סיסמה
-    console.log("Request password reset for:", email);
+    setLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${location.origin}/reset-password`,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      alert("שגיאה בשליחת מייל איפוס: " + error.message);
+    } else {
+      alert("נשלח מייל איפוס! בדוק את תיבת הדואר שלך.");
+    }
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden font-sans">
       {/* רקע של כוכבים */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
-        {[...Array(40)].map((_, i) => (
+        {stars.map((star) => (
           <div
-            key={i}
+            key={star.id}
             className="absolute w-1 h-1 bg-white rounded-full"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `twinkle ${2 + Math.random() * 3}s infinite`,
+              top: star.top,
+              left: star.left,
+              animation: `twinkle ${star.duration}s infinite`,
             }}
           />
         ))}
@@ -56,8 +80,9 @@ export default function ForgotPasswordPage() {
         <button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition"
+          disabled={loading}
         >
-          שלח קישור לאיפוס
+          {loading ? "שולח..." : "שלח קישור לאיפוס"}
         </button>
 
         <p className="mt-6 text-center text-gray-400 text-sm">
