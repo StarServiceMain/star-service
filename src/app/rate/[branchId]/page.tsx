@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import supabase from "@/app/utils/supabase/client";
@@ -48,7 +46,7 @@ export default function RateBranchPage() {
       {
         employee_id: employeeId,
         phone_number: phone,
-        stars, // ודא ששדה זה קיים בטבלה
+        stars,
       },
     ]);
 
@@ -57,6 +55,10 @@ export default function RateBranchPage() {
     } else {
       setRatings((prev) => ({ ...prev, [employeeId]: stars }));
     }
+  };
+
+  const handleFinish = () => {
+    window.location.href = "https://google.com"; // שנה לכתובת הרצויה
   };
 
   return (
@@ -121,6 +123,13 @@ export default function RateBranchPage() {
               </div>
             </div>
           ))}
+
+          <button
+            onClick={handleFinish}
+            className="mt-8 w-full bg-green-600 hover:bg-green-700 py-3 rounded text-xl font-bold"
+          >
+            סיום ודירוג
+          </button>
         </div>
       )}
     </div>
