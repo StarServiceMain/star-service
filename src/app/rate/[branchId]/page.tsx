@@ -4,11 +4,20 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import supabase from "@/app/utils/supabase/client";
 
+interface Employee {
+  id: string;
+  name: string;
+  image_url: string;
+  branch_id: string;
+}
+
 export default function RateBranchPage() {
-  const { branchId } = useParams();
+  const params = useParams();
+  const branchId = params.branchId as string;
+
   const [phone, setPhone] = useState("");
   const [submittedPhone, setSubmittedPhone] = useState(false);
-  const [employees, setEmployees] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(false);
   const [ratings, setRatings] = useState<{ [employeeId: string]: number }>({});
 
@@ -22,11 +31,11 @@ export default function RateBranchPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("employees")
-      .select("*")
+      .select("id, name, image_url, branch_id")
       .eq("branch_id", branchId);
 
     if (error) {
-      console.error("Error fetching employees:", error);
+      console.error("שגיאה בשליפת עובדים:", error);
     } else {
       setEmployees(data || []);
     }
@@ -39,7 +48,7 @@ export default function RateBranchPage() {
       {
         employee_id: employeeId,
         phone_number: phone,
-        rating: stars,
+        stars, // ודא ששדה זה קיים בטבלה
       },
     ]);
 
