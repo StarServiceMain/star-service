@@ -12,6 +12,11 @@ interface Employee {
   total_stars?: number;
 }
 
+interface Rating {
+  employee_id: string;
+  stars: number;
+}
+
 export default function EmployeesListPage() {
   const params = useParams();
   const branchId = params.id as string;
@@ -33,8 +38,7 @@ export default function EmployeesListPage() {
         return;
       }
 
-      // שליפה של דירוגים לפי העובדים האלה
-      const employeeIds = employees.map(emp => emp.id);
+      const employeeIds = employeesData.map(emp => emp.id);
 
       const { data: ratingsData, error: ratingError } = await supabase
         .from("ratings")
@@ -46,9 +50,8 @@ export default function EmployeesListPage() {
         return;
       }
 
-      // חישוב סך כל הכוכבים לכל עובד
       const starMap: Record<string, number> = {};
-      ratingsData?.forEach((r) => {
+      ratingsData?.forEach((r: Rating) => {
         if (!starMap[r.employee_id]) starMap[r.employee_id] = 0;
         starMap[r.employee_id] += r.stars;
       });
