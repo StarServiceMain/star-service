@@ -31,15 +31,15 @@ export default function ForgotPasswordPage() {
     setLoading(false);
 
     if (error) {
-      alert("שגיאה בשליחת מייל איפוס: " + error.message);
+      alert("Error sending reset email: " + error.message);
     } else {
-      alert("נשלח מייל איפוס! בדוק את תיבת הדואר שלך.");
+      alert("A reset email has been sent! Check your mailbox.");
     }
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden font-sans">
-      {/* רקע של כוכבים */}
+      {/* Background of stars */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         {stars.map((star) => (
           <div
@@ -60,15 +60,15 @@ export default function ForgotPasswordPage() {
       >
         <div className="flex justify-center items-center gap-2 mb-6">
           <Star className="text-yellow-400 w-7 h-7" />
-          <h2 className="text-2xl font-bold text-blue-400">שחזור סיסמה</h2>
+          <h2 className="text-2xl font-bold text-blue-400">Password recovery</h2>
           <Star className="text-yellow-400 w-7 h-7" />
         </div>
 
         <p className="text-sm text-gray-400 mb-4 text-center">
-          הזן את כתובת האימייל שלך ונשלח אליך קישור לאיפוס הסיסמה.
+          Enter your email address and we will send you a link to reset your password.
         </p>
 
-        <label className="block text-sm text-gray-300 mb-1">אימייל</label>
+        <label className="block text-sm text-gray-300 mb-1">Email</label>
         <input
           type="email"
           required
@@ -82,13 +82,13 @@ export default function ForgotPasswordPage() {
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition"
           disabled={loading}
         >
-          {loading ? "שולח..." : "שלח קישור לאיפוס"}
+          {loading ? "Sending...": "Send reset link"}
         </button>
 
         <p className="mt-6 text-center text-gray-400 text-sm">
-          נזכרת בסיסמה?{" "}
+          Remember your password??{" "}
           <Link href="/login" className="text-blue-400 hover:underline">
-            חזור להתחברות
+            Log back in
           </Link>
         </p>
       </form>
