@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import supabase from "@/app/utils/supabase/client";
 import { QRCodeCanvas } from "qrcode.react";
 
-// טיפוס עבור סניף
+// Climbing for a branch
 interface Branch {
   id: string;
   name: string;
@@ -95,7 +95,7 @@ export default function DashboardPage() {
   };
 
   const deleteBranch = async (branchId: string) => {
-    if (!confirm("האם אתה בטוח שברצונך למחוק את הסניף?")) return;
+    if (!confirm("Are you sure you want to delete the branch?")) return;
 
     const { error } = await supabase
       .from("branches")
@@ -104,7 +104,7 @@ export default function DashboardPage() {
 
     if (error) {
       console.error("Error deleting branch:", JSON.stringify(error, null, 2));
-      alert("אירעה שגיאה בעת מחיקת הסניף.");
+      alert("An error occurred while deleting the branch.");
     } else {
       setBranches(branches.filter((b) => b.id !== branchId));
     }
@@ -116,7 +116,7 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return <div className="text-center text-white mt-20">טוען...</div>;
+    return <div className="text-center text-white mt-20">Loading...</div>;
   }
 
   return (
@@ -129,11 +129,11 @@ export default function DashboardPage() {
 
       <div className="w-full max-w-md space-y-10">
         <section className="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">הוסף סניף חדש</h2>
+          <h2 className="text-xl font-semibold mb-4">Add a new branch</h2>
           <input
             type="text"
             className="p-3 w-full bg-gray-700 text-white rounded"
-            placeholder="שם הסניף"
+            placeholder="Branch name"
             value={newBranchName}
             onChange={(e) => setNewBranchName(e.target.value)}
           />
@@ -141,12 +141,12 @@ export default function DashboardPage() {
             className="bg-blue-600 hover:bg-blue-700 text-white mt-4 px-4 py-2 rounded w-full"
             onClick={addBranch}
           >
-            הוסף סניף
+            Add a branch
           </button>
         </section>
 
         <section className="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">הוסף עובדים לסניף</h2>
+          <h2 className="text-xl font-semibold mb-4">Add employees to the branch</h2>
           {branches.length > 0 ? (
             branches.map((branch) => (
               <div key={branch.id} className="flex flex-col gap-2 mt-4">
@@ -156,20 +156,20 @@ export default function DashboardPage() {
                     className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm"
                     onClick={() => router.push(`/dashboard/branch/${branch.id}/add-employee`)}
                   >
-                    הוסף עובד
+                    Add employee
                   </button>
                   <button
                     className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm"
                     onClick={() => deleteBranch(branch.id)}
                   >
-                    מחק
+                    eraser
                   </button>
                 </div>
                 <button
                   className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm"
                   onClick={() => setShowQrFor(branch.id)}
                 >
-                  צור ברקוד לדירוגים
+                  Create a barcode for ratings
                 </button>
                 {showQrFor === branch.id && (
                   <div className="flex justify-center pt-2">
@@ -180,12 +180,12 @@ export default function DashboardPage() {
               </div>
             ))
           ) : (
-            <p className="text-sm text-gray-300">לא נמצאו סניפים.</p>
+            <p className="text-sm text-gray-300">No branches found.</p>
           )}
         </section>
 
         <section className="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">רשימת העובדים</h2>
+          <h2 className="text-xl font-semibold mb-4">Employee list</h2>
           {branches.length > 0 ? (
             branches.map((branch) => (
               <div key={branch.id} className="mt-3">
@@ -194,12 +194,12 @@ export default function DashboardPage() {
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-2 w-full"
                   onClick={() => router.push(`/dashboard/branch/${branch.id}/employees`)}
                 >
-                  צפייה ברשימת העובדים
+                  Viewing the employee list
                 </button>
               </div>
             ))
           ) : (
-            <p className="text-sm text-gray-300">לא נמצאו סניפים.</p>
+            <p className="text-sm text-gray-300">No branches found.</p>
           )}
         </section>
       </div>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
         onClick={handleLogout}
         className="fixed bottom-6 mx-auto left-0 right-0 w-60 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl shadow-lg text-center transition"
       >
-        התנתק
+        Disconnect
       </button>
 
       <div className="absolute inset-0 pointer-events-none opacity-10">
