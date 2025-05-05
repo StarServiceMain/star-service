@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white font-sans relative overflow-hidden">
-      {/* כוכבים ברקע */}
+      {/* Stars in the background */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         {[...Array(40)].map((_, i) => (
           <div
@@ -30,27 +30,27 @@ export default function Home() {
 
         <p className="text-lg text-gray-300 mb-8 leading-relaxed">
           
-          פלטפורמה חדשנית לדירוג העובדים שלכם
-           שירות ברמה הגבוהה ביותר
-          הצטרפו עכשיו ותהנו ממערכת חכמה יעילה ומקצועית
+          An innovative platform for rating your employees
+           Top-notch service
+          Join now and enjoy a smart, efficient and professional system.
         </p>
 
         <div className="flex justify-center gap-6">
           <Link href="/register">
             <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white text-md font-semibold transition">
-              הירשם עכשיו
+              Register now
             </button>
           </Link>
 
           <Link href="/login">
             <button className="bg-transparent border border-blue-500 hover:bg-blue-500 hover:text-white px-6 py-3 rounded-lg text-blue-400 text-md font-semibold transition">
-              התחבר
+              Log in
             </button>
           </Link>
         </div>
       </div>
 
-      {/* אנימציית כוכבים */}
+      {/* Star animation */}
       <style jsx>{`
         @keyframes twinkle {
           0%, 100% {
