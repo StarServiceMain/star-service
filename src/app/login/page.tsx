@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // אם כבר מחובר – העבר לדשבורד
+  // If already logged in – go to the dashboard
   useEffect(() => {
     const checkSession = async () => {
       const {
@@ -25,47 +25,47 @@ export default function LoginPage() {
       }
     };
     checkSession();
-  }, [router]); // תלות ב-router כדי למנוע קריאות חוזרות מיותרות
+  }, [router]); // Dependency on router to avoid unnecessary callbacks
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // איפוס שגיאות ישנות
-    setLoading(true); // הפעלת טעינה
-    console.log("📥 התחברות מתבצעת...");
+    setError(""); // Reset old errors
+    setLoading(true); // Charging activation
+    console.log("📥 Connecting in progress...");
 
     try {
-      // עדכון לשימוש ב-signInWithPassword במקום signIn
+      // Update to use signInWithPassword instead of signIn
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      setLoading(false); // עצירת טעינה אחרי שהבקשה הסתיימה
+      setLoading(false); // Stop loading after the request is complete
 
       if (error) {
-        console.error("❌ שגיאה בהתחברות:", error.message);
-        // טיפול בשגיאות בצורה ברורה
+        console.error("❌ Connection error:", error.message);
+        // Handling errors clearly
         if (error.message.includes("Invalid login credentials")) {
-          setError("אימייל או סיסמה שגויים");
+          setError("Incorrect email or password");
         } else {
-          setError("אירעה שגיאה. נסה שוב.");
+          setError("An error occurred. Please try again..");
         }
       } else if (data?.session) {
-        console.log("✅ התחברות הצליחה! מעביר לדשבורד...");
-        router.push("/dashboard"); // העברה לדשבורד אחרי התחברות
+        console.log("✅ Login successful! Transferring to dashboard...");
+        router.push("/dashboard"); // Transfer to dashboard after login
       } else {
-        setError("אירעה שגיאה לא צפויה. נסה שוב.");
+        setError("An unexpected error occurred. Please try again..");
       }
     } catch (err) {
       setLoading(false);
-      console.error("❌ שגיאה בלתי צפויה:", err);
-      setError("אירעה שגיאה. נסה שוב.");
+      console.error("❌ Unexpected error:", err);
+      setError("An error occurred. Please try again..");
     }
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white font-sans relative overflow-hidden">
-      {/* רקע של כוכבים */}
+      {/* Background of stars */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         {Array.from({ length: 40 }).map((_, i) => (
           <div
@@ -86,11 +86,11 @@ export default function LoginPage() {
       >
         <div className="flex justify-center items-center gap-2 mb-6">
           <Star className="text-yellow-400 w-7 h-7" />
-          <h2 className="text-3xl font-bold text-blue-400">התחברות לחשבון</h2>
+          <h2 className="text-3xl font-bold text-blue-400">Account login</h2>
           <Star className="text-yellow-400 w-7 h-7" />
         </div>
 
-        <label className="block text-sm text-gray-300 mb-1">אימייל</label>
+        <label className="block text-sm text-gray-300 mb-1">Email</label>
         <input
           type="email"
           required
@@ -99,7 +99,7 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <label className="block text-sm text-gray-300 mb-1">סיסמה</label>
+        <label className="block text-sm text-gray-300 mb-1">password</label>
         <input
           type="password"
           required
@@ -115,7 +115,7 @@ export default function LoginPage() {
             loading ? "bg-gray-600 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
           } text-white font-semibold py-3 rounded transition`}
         >
-          {loading ? "מתחבר..." : "התחבר"}
+          {loading ? "Connecting...": "Connect"}
         </button>
 
         {error && (
@@ -123,9 +123,9 @@ export default function LoginPage() {
         )}
 
         <p className="mt-6 text-center text-gray-400 text-sm">
-          אין לך חשבון?{" "}
+          You do not have an account.?{" "}
           <Link href="/register" className="text-blue-400 hover:underline">
-            הרשם עכשיו
+            Register now
           </Link>
         </p>
         <div className="mt-4 text-center">
@@ -133,7 +133,7 @@ export default function LoginPage() {
             href="/forgot-password"
             className="text-sm text-blue-400 hover:underline"
           >
-            שכחת סיסמה?
+            Forgot your password??
           </Link>
         </div>
       </form>
