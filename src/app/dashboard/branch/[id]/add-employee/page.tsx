@@ -18,7 +18,7 @@ export default function AddEmployeePage() {
     setError("");
 
     if (!name.trim() || !imageFile) {
-      setError("נא למלא את כל השדות כולל תמונה.");
+      setError("Please fill in all fields including a picture.");
       return;
     }
 
@@ -28,13 +28,13 @@ export default function AddEmployeePage() {
     const fileName = `${Date.now()}.${fileExt}`;
     const filePath = `${branchId}/${fileName}`;
 
-    // העלאת תמונה
+    // Uploading a picture
     const { error: uploadError } = await supabase.storage
       .from("employees")
       .upload(filePath, imageFile);
 
     if (uploadError) {
-      setError("שגיאה בהעלאת תמונה: " + uploadError.message);
+      setError("Error uploading image: " + uploadError.message);
       setUploading(false);
       return;
     }
@@ -45,7 +45,7 @@ export default function AddEmployeePage() {
 
     const imageUrl = publicUrlData.publicUrl;
 
-    // שמירת עובד
+    // Employee retention
     const { error: insertError } = await supabase.from("employees").insert([
       {
         name,
@@ -57,7 +57,7 @@ export default function AddEmployeePage() {
     setUploading(false);
 
     if (insertError) {
-      setError("שגיאה בהוספת עובד: " + insertError.message);
+      setError("Error adding employee: " + insertError.message);
     } else {
       router.push("/dashboard");
     }
@@ -66,23 +66,23 @@ export default function AddEmployeePage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
       <div className="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">הוסף עובד חדש</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Add a new employee</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block mb-1">שם העובד</label>
+            <label className="block mb-1">Employee name</label>
             <input
               type="text"
               className="w-full p-3 bg-gray-700 rounded"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="לדוגמה: יוסי כהן"
+              placeholder="For example: Yossi Cohen"
               required
             />
           </div>
 
           <div>
-            <label className="block mb-1">תמונת העובד</label>
+            <label className="block mb-1">Employee photo</label>
             <input
               type="file"
               accept="image/*"
@@ -99,7 +99,7 @@ export default function AddEmployeePage() {
             disabled={uploading}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
           >
-            {uploading ? "מעלה..." : "הוסף עובד"}
+            {uploading ? "Upload..." : "Add employee"}
           </button>
         </form>
       </div>
