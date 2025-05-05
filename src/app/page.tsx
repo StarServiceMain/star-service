@@ -30,7 +30,7 @@ export default function Home() {
 
         <p className="text-lg text-gray-300 mb-8 leading-relaxed">
           
-          An innovative platform for rating your employees
+          An platform for rating your employees
            Top-notch service
           Join now and enjoy a smart, efficient and professional system.
         </p>
