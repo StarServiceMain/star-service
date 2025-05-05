@@ -36,7 +36,7 @@ export default function RateBranchPage() {
       .eq("branch_id", branchId);
 
     if (error) {
-      console.error("שגיאה בשליפת עובדים:", error);
+      console.error("Error retrieving employees:", error);
     } else {
       setEmployees(data || []);
     }
@@ -54,19 +54,19 @@ export default function RateBranchPage() {
     ]);
 
     if (error) {
-      alert("שגיאה בשמירת הדירוג.");
+      alert("Error saving rating.");
     } else {
       setRatings((prev) => ({ ...prev, [employeeId]: stars }));
     }
   };
 
   const handleFinish = () => {
-    window.location.href = "https://google.com"; // שנה לכתובת הרצויה
+    window.location.href = "https://google.com"; // Change to the desired address
   };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-6">דירוג עובדים</h1>
+      <h1 className="text-3xl font-bold mb-6">Employee rating</h1>
 
       {!submittedPhone ? (
         <form
@@ -76,7 +76,7 @@ export default function RateBranchPage() {
           }}
           className="bg-gray-800 p-6 rounded-xl w-full max-w-sm"
         >
-          <label className="block mb-2 text-sm">הזן מספר טלפון:</label>
+          <label className="block mb-2 text-sm">Enter a phone number:</label>
           <input
             type="tel"
             className="w-full p-3 rounded bg-gray-700"
@@ -86,11 +86,11 @@ export default function RateBranchPage() {
             required
           />
           <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded">
-            המשך לדירוג
+            Continue to rating
           </button>
         </form>
       ) : loading ? (
-        <p>טוען עובדים...</p>
+        <p>Loading workers...</p>
       ) : (
         <div className="w-full max-w-2xl space-y-6">
           {employees.map((emp) => (
@@ -131,7 +131,7 @@ export default function RateBranchPage() {
             onClick={handleFinish}
             className="mt-8 w-full bg-green-600 hover:bg-green-700 py-3 rounded text-xl font-bold"
           >
-            סיום ודירוג
+            End of rating
           </button>
         </div>
       )}
