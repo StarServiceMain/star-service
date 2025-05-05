@@ -26,14 +26,14 @@ export default function EmployeesListPage() {
 
   useEffect(() => {
     const fetchEmployeesWithStars = async () => {
-      // שליפה של כל העובדים בסניף
+      // Retrieval of all employees at the branch
       const { data: employeesData, error: empError } = await supabase
         .from("employees")
         .select("id, name, image_url, branch_id")
         .eq("branch_id", branchId);
 
       if (empError || !employeesData) {
-        console.error("שגיאה בשליפת עובדים:", empError?.message);
+        console.error("Error retrieving employees:", empError?.message);
         setLoading(false);
         return;
       }
@@ -45,7 +45,7 @@ export default function EmployeesListPage() {
         .select("employee_id, stars");
 
       if (ratingError) {
-        console.error("שגיאה בשליפת דירוגים:", ratingError.message);
+        console.error("Error retrieving ratings:", ratingError.message);
         setLoading(false);
         return;
       }
@@ -69,12 +69,12 @@ export default function EmployeesListPage() {
   }, [branchId]);
 
   const deleteEmployee = async (id: string) => {
-    if (!confirm("האם אתה בטוח שברצונך למחוק את העובד?")) return;
+    if (!confirm("Are you sure you want to delete the employee??")) return;
 
     const { error } = await supabase.from("employees").delete().eq("id", id);
     if (error) {
-      console.error("שגיאה במחיקת עובד:", error.message);
-      alert("אירעה שגיאה בעת המחיקה.");
+      console.error("Error deleting employee:", error.message);
+      alert("An error occurred while deleting..");
       return;
     }
 
@@ -83,12 +83,12 @@ export default function EmployeesListPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-10">רשימת עובדים</h1>
+      <h1 className="text-3xl font-bold text-center mb-10">Employee list</h1>
 
       {loading ? (
-        <div className="text-center">טוען עובדים...</div>
+        <div className="text-center">Loading workers...</div>
       ) : employees.length === 0 ? (
-        <div className="text-center text-gray-400">אין עובדים בסניף זה.</div>
+        <div className="text-center text-gray-400">There are no employees at this branch..</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {employees.map((employee) => (
@@ -103,13 +103,13 @@ export default function EmployeesListPage() {
               />
               <h2 className="text-lg font-semibold">{employee.name}</h2>
               <div className="mt-2 text-yellow-400 text-lg">
-                ⭐ {employee.total_stars} כוכבים
+                ⭐ {employee.total_stars} Stars
               </div>
               <button
                 onClick={() => deleteEmployee(employee.id)}
                 className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
               >
-                מחק עובד
+                Delete employee
               </button>
             </div>
           ))}
