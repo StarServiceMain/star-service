@@ -25,27 +25,27 @@ export default function RegisterPage() {
     const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
-      console.error("❌ שגיאה בהרשמה:", error.message);
-      setError("שגיאה בהרשמה: " + error.message);
+      console.error("❌ Registration error:", error.message);
+      setError("Registration error: " + error.message);
     } else if (!data?.user) {
-      setError("ההרשמה הצליחה, אך לא הוחזר משתמש.");
+      setError("Registration was successful, but no user was returned..");
     } else {
-      console.log("✅ נרשם בהצלחה! מוסיף לטבלת users...");
+      console.log("✅ Registered successfully! Adding to the table users...");
 
-      // הוספה לטבלת users
+      // Add to table users
       const insertRes = await supabase.from("users").insert([
         {
-          id: data.user.id,  // חשוב! זה ה-ID שה-auth מחזיר
+          id: data.user.id,  // Important! This is the ID that auth returns
           email: email,
         },
       ]);
 
       if (insertRes.error) {
-        console.error("❌ שגיאה בהוספה לטבלת users:", insertRes.error.message);
-        setError("שגיאה בשמירת המשתמש: " + insertRes.error.message);
+        console.error("❌ Error adding to table users:", insertRes.error.message);
+        setError("Error saving user: " + insertRes.error.message);
       } else {
-        console.log("✅ נוסף בהצלחה לטבלת users!");
-        setSuccess("נרשמת בהצלחה! מעביר לדף התחברות...");
+        console.log("✅ Successfully added to the table users!");
+        setSuccess("You have successfully registered! Redirecting to the login page...");
         setTimeout(() => {
           router.push("/login");
         }, 2000);
@@ -55,7 +55,7 @@ export default function RegisterPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white font-sans relative overflow-hidden">
-      {/* כוכבים ברקע */}
+      {/* Stars in the background */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         {[...Array(40)].map((_, i) => (
           <div
@@ -74,17 +74,17 @@ export default function RegisterPage() {
         <div className="flex justify-center items-center gap-2 mb-4">
           <Star className="text-yellow-400 w-6 h-6" />
           <h1 className="text-3xl font-extrabold text-center tracking-wide text-blue-400">
-            הרשמה לשירות
+            Service registration
           </h1>
           <Star className="text-yellow-400 w-6 h-6" />
         </div>
 
         <p className="text-sm text-center mb-8 text-gray-400">
-          הירשם עכשיו כדי להתחבר לאתר
+          Register now to connect to the site
         </p>
 
         <form onSubmit={handleSubmit}>
-          <label className="block mb-2 text-sm">אימייל</label>
+          <label className="block mb-2 text-sm">Email</label>
           <input
             type="email"
             name="email"
@@ -94,7 +94,7 @@ export default function RegisterPage() {
             required
           />
 
-          <label className="block mb-2 text-sm">סיסמה</label>
+          <label className="block mb-2 text-sm">password</label>
           <input
             type="password"
             name="password"
@@ -108,7 +108,7 @@ export default function RegisterPage() {
             type="submit"
             className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition text-white font-semibold text-lg"
           >
-            הירשם עכשיו
+            Register now
           </button>
         </form>
 
